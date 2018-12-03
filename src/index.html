@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            margin: 0 auto 50px;
+            width: 800px;
+            height: 450px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+    </div>
+    <div>
+        <input id="newUrl" type="text" placeholder="输入新的iframe地址">
+        <button onclick="newpage()">确定</button>
+    </div>
+</body>
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.js"></script>
+<script>
+    function parseSearch (url){
+        var json = {};
+        var arr = url.substr(url.indexOf('?') + 1).split('&');
+        arr.forEach(item => {
+            var tmp = item.split('=');
+            json[tmp[0]] = tmp[1];
+        });
+        return json;
+    }
+    var container = $('.container');
+    var obj = parseSearch(window.location.href);
+    var src = obj.src;
+    if (src) {
+        var iframe = document.createElement('iframe');
+        src = decodeURIComponent(src);
+        iframe.width = 800;
+        iframe.height = 450;
+        iframe.src = src;
+        container.append(iframe);
+    }
+
+    function newpage () {
+        var value = $('#newUrl').val();
+        if (!value) {
+            return;
+        }
+        var path = window.location.href.split('?')[0];
+        window.location.href = path + '?src=' + encodeURIComponent(value)
+    }
+
+</script>
+</html>
